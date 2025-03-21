@@ -1,48 +1,53 @@
 def read_constraint_file(filename):
-    adj_matrix = []
+    val_matrix = []
     tasks = {}
-
+    neg=0
     try:
         with open(filename, 'r') as f:
             lines = f.readlines()
 
-        # Count the number of tasks from the lines -->ignore empty lines error "too many values to unpack"
         num_tasks = 0
         for line in lines:
-            if line.strip():  # Ignore empty lines
+            if line.strip():
                 num_tasks += 1
 
-        # Initialize the adjacency matrix with zeros (for N tasks + 2 fictive tasks)
-        adj_matrix = [[0] * (num_tasks + 2) for _ in range(num_tasks + 2)]
+        val_matrix = [[0] * (num_tasks + 2) for _ in range(num_tasks + 2)]
+
 
         for line in lines:
-            if line.strip():  # Skip empty lines
-                parts = list(map(int, line.split()))  # Split the line and convert txt --> integers
-                task_id = parts[0]  
-                duration = parts[1]  
-                predecessors = parts[2:]  # (optional)
-                
-                tasks[task_id] = {'duration': duration, 'predecessors': predecessors}
+            if line.strip():
+                parts = list(map(int, line.split()))
+                task_id, duration = parts[0], parts[1]
+                tasks[task_id] = {'duration': duration, 'predecessors': []}
 
-                # Link this task with its predecessors in the adjacency matrix
+
+        for line in lines:
+            if line.strip():
+                parts = list(map(int, line.split()))
+                task_id = parts[0]
+                predecessors = parts[2:]
+
                 for pred in predecessors:
-                    adj_matrix[pred][task_id] = tasks[pred]['duration']  # Use duration of the predecessor
+                    if pred in tasks:
+                        tasks[task_id]['predecessors'].append(pred)
+                        val_matrix[pred][task_id] = tasks[pred]['duration']
+                        if tasks[pred]['duration']<0 :
+                            neg=1
 
-        # Handle tasks without predecessors (connect them to task 0 with duration 0)
+
+
         for task_id in range(1, num_tasks + 1):
-            if not tasks[task_id]['predecessors']:  # No predecessors
-                adj_matrix[0][task_id] = 0  # Task 0 points to task_id with a duration of 0
+            if not tasks[task_id]['predecessors']:
+                val_matrix[0][task_id] = 0
 
-        # Handle tasks without successors (connect them to task N+1 with their duration)
+
         for task_id in range(1, num_tasks + 1):
-            if not any(task_id in tasks[t]['predecessors'] for t in range(1, num_tasks + 1)):  # No successors
-                adj_matrix[task_id][num_tasks + 1] = tasks[task_id]['duration']
+            if not any(task_id in tasks[t]['predecessors'] for t in range(1, num_tasks + 1)):
+                val_matrix[task_id][num_tasks + 1] = tasks[task_id]['duration']
 
-        # Return the adjacency matrix and task information
-        return adj_matrix, tasks
-    
-    # Big Up to ZAHI
+        return val_matrix, tasks, neg
+
     except FileNotFoundError:
-        print(f"The file {filename} was not found.")
+        print(f"File {filename} not found")
     except Exception as e:
-        print(f"Error processing the file: {e}")
+        print(f"Error: {e}")
