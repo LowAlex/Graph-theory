@@ -17,7 +17,6 @@ def main():
 
             for i in range(1, num_vertices + 1):
                 if not tasks[i]['predecessors']:
-                    # val_matrix[0][i] = 0 already done in graph.py
                     edges.append((0, i, 0))
 
                 has_successor = False
@@ -49,10 +48,6 @@ def main():
             for i in range(num_vertices + 2):
                 print(f"{i:<4}", end="")
                 for j in range(num_vertices + 2):
-                    # if val_matrix[i][j] == 0 and (
-                    #         i != 0 or j not in [k for k in range(1, num_vertices + 1) if not tasks[k]['predecessors']]):
-                    #     print(f"{'*':<4}", end="")
-                    # else:
                     print(f"{val_matrix[i][j]:<4}", end="")
                 print()
 
@@ -90,7 +85,8 @@ def main():
                     for i, rank in enumerate(ranks):
                         print(f"Vertex {i}: Rang {rank}")
 
-                    scheduler = scheduling(ranks, val_matrix, tasks)
+                    scheduler = scheduling(ranks, val_matrix)
+
 
         except FileNotFoundError:
             print(f"File '{filename}' not found")
