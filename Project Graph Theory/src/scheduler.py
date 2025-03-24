@@ -1,5 +1,6 @@
 def scheduling(ranks, val_matrix):
     num_nodes = len(val_matrix)
+    # Initialization of earliest date, total float, and free float
     earliest_date = [0] * num_nodes
     total_float = [0] * num_nodes
     free_float = [0] * num_nodes
@@ -28,15 +29,16 @@ def scheduling(ranks, val_matrix):
 
     # Compute Floats
     for node in range(num_nodes):
-        total_float[node] = latest_date[node] - earliest_date[node]
+        total_float[node] = latest_date[node] - earliest_date[node] # Course formula
         free_float[node] = total_float[node]
-        if total_float[node] == 0:
+        if total_float[node] == 0: # The free float of a task is always 0 if its total float is already 0
             continue
         else:
             for successor in range(num_nodes):
                 if val_matrix[node][successor] != '*':
                     free_float[node] = min(free_float[node], earliest_date[successor] - (earliest_date[node] + val_matrix[node][successor])) # Course formula
 
+    # Computation of all the steps in topological order
     earliest_date_top = [earliest_date[node] for node in sorted_nodes]
     latest_date_top = [latest_date[node] for node in sorted_nodes]
     total_float_top = [total_float[node] for node in sorted_nodes]
