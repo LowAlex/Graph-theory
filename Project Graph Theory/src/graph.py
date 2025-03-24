@@ -11,7 +11,7 @@ def read_constraint_file(filename):
             if line.strip():
                 num_tasks += 1
 
-        val_matrix = [[0] * (num_tasks + 2) for _ in range(num_tasks + 2)]
+        val_matrix = [['*'] * (num_tasks + 2) for _ in range(num_tasks + 2)]
 
 
         for line in lines:

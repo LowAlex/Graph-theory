@@ -12,7 +12,7 @@ def has_cycle(val_matrix):
             print(f"* Visiting node {node}")
 
             for neighbor in range(num_nodes):
-                if val_matrix[node][neighbor] != 0:
+                if val_matrix[node][neighbor] != '*':
                     if not visited[neighbor] and dfs(neighbor):
                         return True
                     elif rec_stack[neighbor]:

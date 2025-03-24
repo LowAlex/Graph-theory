@@ -11,7 +11,7 @@ def compute_ranks(val_matrix):
     print("* Calculating in-degrees")
     for i in range(num_nodes):
         for j in range(num_nodes):
-            if val_matrix[i][j] != 0:
+            if val_matrix[i][j] != '*':
                 in_degree[j] += 1
 
     print(f"In-degrees: {in_degree}")
@@ -30,7 +30,7 @@ def compute_ranks(val_matrix):
         node = queue.popleft()
         print(f"Processing node {node}, Rank: {ranks[node]}")
         for neighbor in range(num_nodes):
-            if val_matrix[node][neighbor] != 0:
+            if val_matrix[node][neighbor] != '*':
                 in_degree[neighbor] -= 1
                 if in_degree[neighbor] == 0:
                     queue.append(neighbor)
