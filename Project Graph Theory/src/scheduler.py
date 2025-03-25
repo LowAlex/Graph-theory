@@ -38,20 +38,16 @@ def scheduling(ranks, val_matrix):
                 if val_matrix[node][successor] != '*':
                     free_float[node] = min(free_float[node], earliest_date[successor] - (earliest_date[node] + val_matrix[node][successor])) # Course formula
 
-    # Computation of all the steps in topological order
+    # Computation of all the steps in topological order, and printing
     earliest_date_top = [earliest_date[node] for node in sorted_nodes]
     latest_date_top = [latest_date[node] for node in sorted_nodes]
     total_float_top = [total_float[node] for node in sorted_nodes]
     free_float_top = [free_float[node] for node in sorted_nodes]
 
     print("Vertices in topological order: ", sorted_nodes)
-    # print("Earliest date: ", earliest_date)
     print("Earliest date in topological order: ", earliest_date_top)
-    # print("Latest date: ", latest_date)
     print("Latest date in topological order: ", latest_date_top)
-    # print("Total float: ", total_float)
     print("Total float in topological order: ", total_float_top)
-    # print("Free float: ", free_float)
     print("Free float in topological order: ", free_float_top)
 
     critical_path = [sorted_nodes[i] for i in range(len(total_float)) if total_float_top[i] == 0]
