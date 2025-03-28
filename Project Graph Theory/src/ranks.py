@@ -43,7 +43,6 @@ def compute_ranks(val_matrix):
         if ranks[i] == -1:
             ranks[i] = 0
             print(f"Node {i} is isolated, setting Rank to 0")
-    for i in range (1,num_nodes):
-        ranks[i] = ranks[i]+1
+
 
     return ranks

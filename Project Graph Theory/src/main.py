@@ -2,6 +2,23 @@ from graph import *
 from ranks import *
 from cycle_detection import *
 from scheduler import *
+import sys
+
+class Tee:
+    def __init__(self, filename):
+        self.file = open(filename, "w")
+        self.stdout = sys.stdout  # Sauvegarde la sortie standard
+
+    def write(self, message):
+        self.stdout.write(message)  # Affiche dans le terminal
+        self.file.write(message)    # Écrit dans le fichier
+
+    def flush(self):
+        self.stdout.flush()
+        self.file.flush()
+
+sys.stdout = Tee("output.txt")
+
 
 def main():
     while True:
